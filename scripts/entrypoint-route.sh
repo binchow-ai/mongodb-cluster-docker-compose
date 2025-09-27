@@ -7,7 +7,7 @@ until mongosh --host rs-config-server/configsvr01:27017,configsvr02:27017,config
 done
 
 # Wait for each shard's replica set to elect a primary
-for shard in 1 2 3; do
+for shard in 1 2; do
   replica_set="rs-shard-0${shard}"
   host_prefix="shard0${shard}"
   echo "Waiting for ${replica_set} to elect a primary..."
@@ -35,9 +35,6 @@ sh.addShard("rs-shard-01/shard01-c:27017")
 sh.addShard("rs-shard-02/shard02-a:27017")
 sh.addShard("rs-shard-02/shard02-b:27017")
 sh.addShard("rs-shard-02/shard02-c:27017")
-sh.addShard("rs-shard-03/shard03-a:27017")
-sh.addShard("rs-shard-03/shard03-b:27017")
-sh.addShard("rs-shard-03/shard03-c:27017")
 EOF
 
 # Keep the mongos process running in the foreground
