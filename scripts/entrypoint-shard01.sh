@@ -13,7 +13,7 @@ sleep 5
 # Function to check if MongoDB is ready locally
 check_mongo_ready() {
   host=$1
-  mongosh --host $host --eval "db.adminCommand('ping')" --quiet
+  mongosh --host $host --port 27017 --eval "db.adminCommand('ping')" --quiet
   return $?
 }
 
@@ -59,10 +59,10 @@ init_shard() {
     
   # Adding more diagnostic output
   echo "Current MongoDB status:"
-  mongosh --eval "db.adminCommand('ping')" || echo "Failed to ping MongoDB"
+  mongosh --port 27017 --eval "db.adminCommand('ping')" || echo "Failed to ping MongoDB"
   
   # Try to initialize replica set
-  mongosh --eval '
+  mongosh --port 27017 --eval '
     rs.initiate({
       _id: "rs-shard-01", 
       version: 1, 

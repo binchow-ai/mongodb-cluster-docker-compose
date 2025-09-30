@@ -84,7 +84,7 @@ services:
   shard01-b:
     image: mongodb/mongodb-community-server:8.2-ubi8
     container_name: shard-01-node-b
-    command: mongod  --port 27017 --shardsvr --replSet rs-shard-01
+    command: mongod  --config /etc/mongod.conf --shardsvr --replSet rs-shard-01
     volumes:
       - ./scripts:/scripts
       - ./data/shards/shard1-b/data:/data/db
@@ -97,7 +97,7 @@ services:
   shard01-c:
     image: mongodb/mongodb-community-server:8.2-ubi8
     container_name: shard-01-node-c
-    command: mongod  --port 27017 --shardsvr --replSet rs-shard-01
+    command: mongod  --config /etc/mongod.conf --shardsvr --replSet rs-shard-01
     volumes:
       - ./scripts:/scripts
       - ./data/shards/shard1-c/data:/data/db
@@ -123,7 +123,7 @@ services:
   shard02-b:
     image: mongodb/mongodb-community-server:8.2-ubi8
     container_name: shard-02-node-b
-    command: mongod  --port 27017 --shardsvr --replSet rs-shard-02
+    command: mongod  --config /etc/mongod.conf  --shardsvr --replSet rs-shard-02
     volumes:
       - ./scripts:/scripts
       - ./data/shards/shard2-b/data:/data/db
@@ -136,7 +136,7 @@ services:
   shard02-c:
     image: mongodb/mongodb-community-server:8.2-ubi8
     container_name: shard-02-node-c
-    command: mongod  --port 27017 --shardsvr --replSet rs-shard-02
+    command: mongod  --config /etc/mongod.conf  --shardsvr --replSet rs-shard-02
     volumes:
       - ./scripts:/scripts
       - ./data/shards/shard2-c/data:/data/db
