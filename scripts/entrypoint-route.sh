@@ -18,7 +18,7 @@ done
 
 # Start mongos in the background
 echo "Starting mongos..."
-mongos --port 27017 --configdb rs-config-server/configsvr01:27017,configsvr02:27017,configsvr03:27017 --bind_ip_all &
+mongos --config /etc/mongod.conf --configdb rs-config-server/configsvr01:27017,configsvr02:27017,configsvr03:27017 --bind_ip_all &
 
 # Wait for mongos to become available
 echo "Waiting for mongos to start..."
@@ -29,12 +29,8 @@ done
 # Add the shards using the provided commands
 echo "Adding shards..."
 mongosh --port 27017 <<EOF
-sh.addShard("rs-shard-01/shard01-a:27017")
-sh.addShard("rs-shard-01/shard01-b:27017")
-sh.addShard("rs-shard-01/shard01-c:27017")
-sh.addShard("rs-shard-02/shard02-a:27017")
-sh.addShard("rs-shard-02/shard02-b:27017")
-sh.addShard("rs-shard-02/shard02-c:27017")
+sh.addShard("rs-shard-01/shard01-a:27017,shard01-b:27017,shard01-c:27017")
+sh.addShard("rs-shard-02/shard02-a:27017,shard02-b:27017,shard02-c:27017")
 EOF
 
 # Keep the mongos process running in the foreground

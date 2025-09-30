@@ -2,7 +2,7 @@
 set -e
 
 # Start MongoDB in the background
-mongod --shardsvr --replSet rs-shard-01 --port 27017 --bind_ip_all &
+mongod --shardsvr --replSet rs-shard-01 --config /etc/mongod.conf --bind_ip_all &
 
 # Store the PID of MongoDB
 MONGO_PID=$!

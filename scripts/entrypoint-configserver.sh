@@ -2,7 +2,7 @@
 set -e
 
 # Start MongoDB in the background
-mongod --configsvr --replSet rs-config-server --port 27017 --bind_ip_all &
+mongod --configsvr --replSet rs-config-server --config /etc/mongod.conf --bind_ip_all &
 
 # Store the PID of MongoDB
 MONGO_PID=$!

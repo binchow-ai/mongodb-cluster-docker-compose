@@ -456,3 +456,11 @@ docker-compose down -v --rmi all --remove-orphans
 - https://github.com/jfollenfant/mongodb-sharding-docker-compose
 - https://viblo.asia/p/cai-dat-mongo-cluster-voi-docker-m68Z0NN25kG
 
+
+
+
+########by zb ############
+
+mkdir -p data/mongos/mongos01/{data,log} data/configsvr/cfg{1,2,3}/{data,log} data/shards/shard{1,2}-{a,b,c}/{data,log}
+
+sudo chown -R ec2-user:ec2-user /home/ec2-user/mongodb-cluster-docker-compose/data/ && chmod -R 755 /home/ec2-user/mongodb-cluster-docker-compose/data/ && find /home/ec2-user/mongodb-cluster-docker-compose/data -type d -exec chmod 777 {} \;
