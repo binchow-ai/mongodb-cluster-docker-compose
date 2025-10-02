@@ -1,7 +1,8 @@
-version: '3.8'
+### no auth version
 
 networks:
-  mongodb-cluster:
+  default:
+    name: mongodb-cluster
     driver: bridge
 
 services:
@@ -16,16 +17,18 @@ services:
       - ./scripts:/scripts
       - ./data/mongos/mongos01/data:/data/db
       - ./data/mongos/mongos01/log:/var/log/mongodb
-      - ./data/mongos/mongos01/mongod.conf:/etc/mongod.conf
+      - ./confs/mongod-mongos01.conf:/etc/mongod.conf
     entrypoint: ["/scripts/entrypoint-route.sh"]
-    networks:
-      - mongodb-cluster
     depends_on:
       - configsvr01
       - configsvr02
       - configsvr03
       - shard01-a
+      - shard01-b
+      - shard01-c
       - shard02-a
+      - shard02-b
+      - shard02-c
 
   ## Config Servers 
   configsvr01:
@@ -35,11 +38,10 @@ services:
       - ./scripts:/scripts
       - ./data/configsvr/cfg1/data:/data/db
       - ./data/configsvr/cfg1/log:/var/log/mongodb
-      - ./data/configsvr/mongod.conf:/etc/mongod.conf
+      - ./confs/mongod-config.conf:/etc/mongod.conf
     restart: always
     entrypoint: ["/scripts/entrypoint-configserver.sh"]
-    networks:
-      - mongodb-cluster
+
 
   configsvr02:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -49,10 +51,9 @@ services:
       - ./scripts:/scripts
       - ./data/configsvr/cfg2/data:/data/db
       - ./data/configsvr/cfg2/log:/var/log/mongodb
-      - ./data/configsvr/mongod.conf:/etc/mongod.conf
+      - ./confs/mongod-config.conf:/etc/mongod.conf
     restart: always
-    networks:
-      - mongodb-cluster
+
 
   configsvr03:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -62,10 +63,9 @@ services:
       - ./scripts:/scripts
       - ./data/configsvr/cfg3/data:/data/db
       - ./data/configsvr/cfg3/log:/var/log/mongodb
-      - ./data/configsvr/mongod.conf:/etc/mongod.conf
+      - ./confs/mongod-config.conf:/etc/mongod.conf
     restart: always
-    networks:
-      - mongodb-cluster
+
 
   ## Shards
   shard01-a:
@@ -75,11 +75,10 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard1-a/data:/data/db
       - ./data/shards/shard1-a/log:/var/log/mongodb
-      - ./data/shards/mongod-shard1.conf:/etc/mongod.conf
+      - ./confs/mongod-shard01.conf:/etc/mongod.conf
     restart: always
     entrypoint: ["/bin/sh", "/scripts/entrypoint-shard01.sh"]
-    networks:
-      - mongodb-cluster
+
 
   shard01-b:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -89,10 +88,9 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard1-b/data:/data/db
       - ./data/shards/shard1-b/log:/var/log/mongodb
-      - ./data/shards/mongod-shard1.conf:/etc/mongod.conf    
+      - ./confs/mongod-shard01.conf:/etc/mongod.conf   
     restart: always
-    networks:
-      - mongodb-cluster
+
 
   shard01-c:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -102,10 +100,9 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard1-c/data:/data/db
       - ./data/shards/shard1-c/log:/var/log/mongodb
-      - ./data/shards/mongod-shard1.conf:/etc/mongod.conf
+      - ./confs/mongod-shard01.conf:/etc/mongod.conf
     restart: always
-    networks:
-      - mongodb-cluster
+
 
   shard02-a:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -114,11 +111,10 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard2-a/data:/data/db
       - ./data/shards/shard2-a/log:/var/log/mongodb
-      - ./data/shards/mongod-shard2.conf:/etc/mongod.conf
+      - ./confs/mongod-shard02.conf:/etc/mongod.conf
     restart: always
     entrypoint: ["/bin/sh", "/scripts/entrypoint-shard02.sh"]
-    networks:
-      - mongodb-cluster
+
 
   shard02-b:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -128,10 +124,9 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard2-b/data:/data/db
       - ./data/shards/shard2-b/log:/var/log/mongodb
-      - ./data/shards/mongod-shard2.conf:/etc/mongod.conf
+      - ./confs/mongod-shard01.conf:/etc/mongod.conf
     restart: always
-    networks:
-      - mongodb-cluster
+    
 
   shard02-c:
     image: mongodb/mongodb-community-server:8.2-ubi8
@@ -141,9 +136,8 @@ services:
       - ./scripts:/scripts
       - ./data/shards/shard2-c/data:/data/db
       - ./data/shards/shard2-c/log:/var/log/mongodb
-      - ./data/shards/mongod-shard2.conf:/etc/mongod.conf
+      - ./confs/mongod-shard02.conf:/etc/mongod.conf
     restart: always
-    networks:
-      - mongodb-cluster
+
 
   

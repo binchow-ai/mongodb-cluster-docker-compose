@@ -34,7 +34,7 @@ wait_for_mongo() {
   echo "Local MongoDB is ready!"
   
   # Then wait for other instances with timeout
-  for host in shard01-b shard01-c; do
+  for host in shard-01-node-b shard-01-node-c; do
     attempt=0
     max_attempts=30
     until check_mongo_ready $host || [ $attempt -ge $max_attempts ]; do
@@ -67,9 +67,9 @@ init_shard() {
       _id: "rs-shard-01", 
       version: 1, 
       members: [ 
-        { _id: 0, host : "shard01-a:27017" }, 
-        { _id: 1, host : "shard01-b:27017" }, 
-        { _id: 2, host : "shard01-c:27017" } 
+        { _id: 0, host : "shard-01-node-a:27017" }, 
+        { _id: 1, host : "shard-01-node-b:27017" }, 
+        { _id: 2, host : "shard-01-node-c:27017" } 
       ] 
     })
   ' || echo "Failed to initialize replica set"

@@ -34,7 +34,7 @@ wait_for_mongo() {
   echo "Local MongoDB is ready!"
   
   # Then wait for other instances with timeout
-  for host in configsvr02 configsvr03; do
+  for host in mongo-config-02 mongo-config-03; do
     attempt=0
     max_attempts=30
     until check_mongo_ready $host || [ $attempt -ge $max_attempts ]; do
@@ -68,9 +68,9 @@ init_config_server() {
       configsvr: true, 
       version: 1, 
       members: [ 
-        { _id: 0, host : 'configsvr01:27017' }, 
-        { _id: 1, host : 'configsvr02:27017' }, 
-        { _id: 2, host : 'configsvr03:27017' } 
+        { _id: 0, host : 'mongo-config-01:27017' }, 
+        { _id: 1, host : 'mongo-config-02:27017' }, 
+        { _id: 2, host : 'mongo-config-03:27017' } 
       ] 
     })
   " || echo "Failed to initialize replica set"
