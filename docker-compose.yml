@@ -1,9 +1,14 @@
-### no auth version
+### no auth version with MongoDB Community Search (mongot)
 
 networks:
   default:
     name: mongodb-cluster
     driver: bridge
+
+volumes:
+  mongot_shard01_data:
+  mongot_shard02_data:
+  mongot_logs:
 
 services:
   ## Router
@@ -131,13 +136,47 @@ services:
   shard02-c:
     image: mongodb/mongodb-community-server:8.2-ubi8
     container_name: shard-02-node-c
-    command: mongod  --config /etc/mongod.conf  --shardsvr --replSet rs-shard-02
+    command: mongod --config /etc/mongod.conf  --shardsvr --replSet rs-shard-02
     volumes:
       - ./scripts:/scripts
       - ./data/shards/shard2-c/data:/data/db
       - ./data/shards/shard2-c/log:/var/log/mongodb
       - ./confs/mongod-shard02.conf:/etc/mongod.conf
     restart: always
+
+  ## MongoDB Search (mongot) for Shard 01
+  mongot-shard01:
+    image: mongodb/mongodb-community-search:latest
+    container_name: mongot-shard01
+    ports:
+      - 8080:8080  
+      - 9946:9946
+    volumes:
+      - ./data/mongot1_data:/data/mongot
+      - ./confs/mongot01.conf:/mongot-community/config.default.yml
+      - ./confs/pwfile:/mongot-community/pwfile:ro
+    restart: always
+    depends_on:
+      - shard01-a
+      - shard01-b
+      - shard01-c
+    
+  ## MongoDB Search (mongot) for Shard 02
+  mongot-shard02:
+    image: mongodb/mongodb-community-search:latest
+    container_name: mongot-shard02
+    ports:
+      - 8080:8080  
+      - 9946:9946
+    volumes:
+      - ./data/mongot2_data:/data/mongot
+      - ./confs/mongot02.conf:/mongot-community/config.default.yml
+      - ./confs/pwfile:/mongot-community/pwfile:ro
+    restart: always
+    depends_on:
+      - shard02-a
+      - shard02-b
+      - shard02-c
 
 
   
